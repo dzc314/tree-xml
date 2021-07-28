@@ -14,7 +14,7 @@ import 'tree-xml/dist/tree-xml.css'
 ```
 
 ### 预览
-![avatar](./public/img/img-tree-xml.png)
+![avatar](https://img.41201314.com//npm/img-tree-xml.png)
 
 ### 使用
 ```
