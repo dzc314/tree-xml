@@ -1,20 +1,29 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <tree-xml :xmlCode="xmlCode"></tree-xml>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from './components/HelloWorld.vue';
-
+import { Component, Vue } from "vue-property-decorator";
+import TreeXml from "@/components/tree-xml.vue";
 @Component({
   components: {
-    HelloWorld,
+    TreeXml,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  xmlCode = `
+    <template>
+      <div id="app" ref="app">
+        <!---- 注释 ---->
+        <tree-xml :xmlCode="xmlCode"></tree-xml>
+        <DIV>test</DIV>
+        <div prop="prop1"></div>
+        <a href="https://41201314.com">情侣照片墙</a>
+      </div>
+    </template>`;
+}
 </script>
 
 <style>
@@ -22,8 +31,5 @@ export default class App extends Vue {}
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
