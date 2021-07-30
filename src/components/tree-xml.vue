@@ -5,7 +5,7 @@
     default-expand-all
     :expand-on-click-node="false"
   >
-    <div slot-scope="{ data }">
+    <div class="xml-node" slot-scope="{ data }">
       <!-- {{ renderXmlNode(data) }} -->
       <span v-if="data.isComment" class="comment">
         &lt;!--{{ data.comment }}--&gt;
@@ -20,8 +20,9 @@
           <span v-for="(value, key) in data.attrs" :key="key">
             <span class="tag-prop"> {{ key }}</span
             >="<span class="prop-value">{{ value }}</span
-            >"</span>
-        </template>{{ data.isLeaf && !data.text ? " /&gt;" : ">" }}
+            >"</span
+          > </template
+        >{{ data.isLeaf && !data.text ? " /&gt;" : ">" }}
         <template v-if="data.text">
           <span class="tag-text">{{ data.text }}</span>
           &lt;/<span class="tag-name">{{ data.tagName }}</span
@@ -69,7 +70,7 @@ export default class TreeXml extends Vue {
   parserXml(xmlCode: string) {
     const tree: XmlNode[] = [];
     const stack: XmlNode[] = [];
-    let curNode: XmlNode;
+    let curNode: XmlNode = {};
     const pushNode = (node: XmlNode) => {
       const len = stack.length;
       if (len === 0) {
@@ -95,6 +96,9 @@ export default class TreeXml extends Vue {
         },
         ontext(text: string) {
           // console.log(text);
+          if (!curNode.tagName) {
+            return;
+          }
           if (text.trim() !== "") {
             curNode.text = text;
           }
@@ -141,49 +145,55 @@ export default class TreeXml extends Vue {
     return tree;
   }
 
-  renderXmlNode(node: XmlNode) {
-    const { tagName, isLeaf, text, attrs, isComment, comment, isEnd } = node;
-    if (isComment) {
-      return `<!--${comment}-->`;
-    }
-    if (isEnd) {
-      return `</${tagName}>`;
-    }
-    const result: string[] = [`<${tagName}`];
-    if (attrs) {
-      for (const key in attrs) {
-        if (Object.prototype.hasOwnProperty.call(attrs, key)) {
-          const value = attrs[key];
-          result.push(`${key}="${value}"`);
-        }
-      }
-    }
-    if (isLeaf && !text) {
-      result.push("/>");
-    } else {
-      result[result.length - 1] += ">";
-    }
-    if (text) {
-      result.push(text);
-      result.push(`</${tagName}>`);
-    }
-    return result.join(" ");
-  }
+  // renderXmlNode(node: XmlNode) {
+  //   const { tagName, isLeaf, text, attrs, isComment, comment, isEnd } = node;
+  //   if (isComment) {
+  //     return `<!--${comment}-->`;
+  //   }
+  //   if (isEnd) {
+  //     return `</${tagName}>`;
+  //   }
+  //   const result: string[] = [`<${tagName}`];
+  //   if (attrs) {
+  //     for (const key in attrs) {
+  //       if (Object.prototype.hasOwnProperty.call(attrs, key)) {
+  //         const value = attrs[key];
+  //         result.push(`${key}="${value}"`);
+  //       }
+  //     }
+  //   }
+  //   if (isLeaf && !text) {
+  //     result.push("/>");
+  //   } else {
+  //     result[result.length - 1] += ">";
+  //   }
+  //   if (text) {
+  //     result.push(text);
+  //     result.push(`</${tagName}>`);
+  //   }
+  //   return result.join(" ");
+  // }
 }
 </script>
 
 <style lang="scss" scoped>
 .xml-tree {
+  ::v-deep.el-tree-node__content {
+    height: auto;
+  }
+  .xml-node {
+    white-space: pre-wrap;
+  }
   .comment {
     color: green;
   }
-  .tag-prop{
+  .tag-prop {
     color: blue;
   }
-  .prop-value{
+  .prop-value {
     color: red;
   }
-  .tag-text{
+  .tag-text {
     color: #000;
   }
 }
