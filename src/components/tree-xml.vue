@@ -120,6 +120,7 @@ export default class TreeXml extends Vue {
             isEnd: true,
           };
           pushNode(endNode);
+          curNode = {};
         },
         oncomment(comment: string) {
           // console.log(comment);
